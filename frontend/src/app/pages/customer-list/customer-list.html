@@ -1,0 +1,62 @@
+<div class="toolbar">
+  <div class="field search-field">
+    <label for="customer-search">Suche</label>
+    <input
+      id="customer-search"
+      data-testid="customer-search"
+      type="text"
+      placeholder="Kundennummer, Name oder E-Mail"
+      [ngModel]="search()"
+      (ngModelChange)="onSearchChange($event)"
+    />
+  </div>
+  <div class="field">
+    <label for="customer-status-filter">Status</label>
+    <select id="customer-status-filter" data-testid="customer-status-filter" [ngModel]="status()" (ngModelChange)="onStatusChange($event)">
+      <option value="Alle">Alle</option>
+      <option value="Interessent">Interessent</option>
+      <option value="Aktiv">Aktiv</option>
+      <option value="Inaktiv">Inaktiv</option>
+    </select>
+  </div>
+  <button mat-raised-button color="primary" type="button" data-testid="btn-create-customer" (click)="openCreateDialog()">
+    Neuen Kunden anlegen
+  </button>
+</div>
+
+@if (sortedCustomers().length === 0) {
+  <p data-testid="customer-list-empty">{{ messages.noCustomersFound }}</p>
+} @else {
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th scope="col" class="sortable" [attr.aria-sort]="ariaSortFor('customerNumber')" (click)="sortBy('customerNumber')">
+          Kundennummer
+        </th>
+        <th scope="col" class="sortable" [attr.aria-sort]="ariaSortFor('lastName')" (click)="sortBy('lastName')">Name</th>
+        <th scope="col">Ort</th>
+        <th scope="col">Status</th>
+        <th scope="col">Verträge</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (customer of sortedCustomers(); track customer.id) {
+        <tr
+          [attr.data-testid]="'customer-row-' + customer.customerNumber"
+          data-clickable="true"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="'Kunde ' + customer.lastName + ', ' + customer.firstName + ' öffnen'"
+          (click)="openCustomer(customer.id)"
+          (keydown.enter)="openCustomer(customer.id)"
+        >
+          <td>{{ customer.customerNumber }}</td>
+          <td>{{ customer.lastName }}, {{ customer.firstName }}</td>
+          <td>{{ customer.city }}</td>
+          <td>{{ customer.status }}</td>
+          <td>{{ customer.contractsCount }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

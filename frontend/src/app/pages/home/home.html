@@ -1,0 +1,76 @@
+<section class="kpi-grid">
+  @if (dashboard(); as d) {
+    <mat-card data-testid="dashboard-tile-customers-total">
+      <mat-card-content>
+        <p class="kpi-label">Kunden gesamt</p>
+        <p class="kpi-value">{{ d.customersTotal }}</p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card data-testid="dashboard-tile-customers-active">
+      <mat-card-content>
+        <p class="kpi-label">Aktive Kunden</p>
+        <p class="kpi-value">{{ d.customersActive }}</p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card data-testid="dashboard-tile-contracts-active">
+      <mat-card-content>
+        <p class="kpi-label">Aktive Verträge</p>
+        <p class="kpi-value">{{ d.contractsActive }}</p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card data-testid="dashboard-tile-contracts-expiring">
+      <mat-card-content>
+        <p class="kpi-label">Verträge laufen in 60 Tagen aus</p>
+        <p class="kpi-value">{{ d.contractsExpiring }}</p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card data-testid="dashboard-tile-premium-volume">
+      <mat-card-content>
+        <p class="kpi-label">Jahresbeitragsvolumen aktiver Verträge</p>
+        <p class="kpi-value">{{ d.premiumVolume | currency: 'EUR' : 'symbol' : '1.2-2' : 'de-DE' }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
+</section>
+
+<section>
+  <h2>Bald auslaufende Verträge</h2>
+  @if (dashboard(); as d) {
+    @if (d.expiringContracts.length === 0) {
+      <p>{{ messages.noExpiringContracts }}</p>
+    } @else {
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th scope="col">Policennummer</th>
+            <th scope="col">Sparte</th>
+            <th scope="col">Kunde</th>
+            <th scope="col">Vertragsende</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (contract of d.expiringContracts; track contract.policyNumber) {
+            <tr
+              [attr.data-testid]="'expiring-row-' + contract.policyNumber"
+              data-clickable="true"
+              tabindex="0"
+              role="button"
+              [attr.aria-label]="'Kunde ' + contract.customerName + ' öffnen'"
+              (click)="openCustomer(contract.customerId)"
+              (keydown.enter)="openCustomer(contract.customerId)"
+            >
+              <td>{{ contract.policyNumber }}</td>
+              <td>{{ contract.line }}</td>
+              <td>{{ contract.customerName }}</td>
+              <td>{{ contract.endDate | date: 'dd.MM.yyyy' : undefined : 'de-DE' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</section>
+
+<button mat-raised-button color="primary" type="button" data-testid="btn-create-customer" (click)="openCreateDialog()">
+  Neuen Kunden anlegen
+</button>

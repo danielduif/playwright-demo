@@ -1,0 +1,145 @@
+@if (notFound()) {
+  <h2>{{ messages.customerNotFound }}</h2>
+  <p><a routerLink="/kunden">Zur Kundenliste</a></p>
+} @else if (customer(); as c) {
+  <p><a routerLink="/kunden">Zurück zur Kundenliste</a></p>
+
+  <header class="customer-header">
+    <div>
+      <h2>{{ c.salutation }} {{ c.firstName }} {{ c.lastName }}</h2>
+      <p class="customer-number">{{ c.customerNumber }}</p>
+    </div>
+    <mat-chip-set>
+      <mat-chip [attr.data-testid]="'customer-status-chip'">{{ c.status }}</mat-chip>
+    </mat-chip-set>
+    <button mat-raised-button color="warn" type="button" data-testid="btn-delete-customer" (click)="deleteCustomer()">
+      Kunde löschen
+    </button>
+  </header>
+
+  @if (deleteErrorBanner(); as banner) {
+    <div class="dialog-error-banner" role="alert" data-testid="customer-delete-error-banner">{{ banner }}</div>
+  }
+
+  <div class="info-cards">
+    <mat-card data-testid="card-master-data">
+      <mat-card-header>
+        <mat-card-title>Stammdaten</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <dl>
+          <dt>Anrede</dt>
+          <dd>{{ c.salutation }}</dd>
+          <dt>Vorname</dt>
+          <dd>{{ c.firstName }}</dd>
+          <dt>Nachname</dt>
+          <dd>{{ c.lastName }}</dd>
+          <dt>Geburtsdatum</dt>
+          <dd>{{ c.birthDate | date: 'dd.MM.yyyy' : undefined : 'de-DE' }}</dd>
+          <dt>Status</dt>
+          <dd>{{ c.status }}</dd>
+        </dl>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-button
+          type="button"
+          data-testid="btn-edit-master-data"
+          aria-label="Stammdaten bearbeiten"
+          (click)="openMasterDataDialog()"
+        >
+          Bearbeiten
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card data-testid="card-contact">
+      <mat-card-header>
+        <mat-card-title>Kontakt &amp; Adresse</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <dl>
+          <dt>E-Mail-Adresse</dt>
+          <dd>{{ c.email }}</dd>
+          <dt>Telefonnummer</dt>
+          <dd>{{ c.phone || '–' }}</dd>
+          <dt>Straße</dt>
+          <dd>{{ c.street }} {{ c.houseNumber }}</dd>
+          <dt>Ort</dt>
+          <dd>{{ c.postalCode }} {{ c.city }}</dd>
+        </dl>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-button
+          type="button"
+          data-testid="btn-edit-contact"
+          aria-label="Kontakt & Adresse bearbeiten"
+          (click)="openContactDialog()"
+        >
+          Bearbeiten
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <section class="contracts-section">
+    <h3>Verträge</h3>
+    @if (c.contracts.length === 0) {
+      <p>{{ messages.noContracts }}</p>
+    } @else {
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th scope="col">Policennummer</th>
+            <th scope="col">Sparte</th>
+            <th scope="col">Versicherer</th>
+            <th scope="col">Beginn</th>
+            <th scope="col">Ende</th>
+            <th scope="col">Jahresbeitrag</th>
+            <th scope="col">Zahlweise</th>
+            <th scope="col">Status</th>
+            <th scope="col">Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (contract of c.contracts; track contract.id) {
+            <tr [attr.data-testid]="'contract-row-' + contract.policyNumber">
+              <td>{{ contract.policyNumber }}</td>
+              <td>{{ contract.line }}</td>
+              <td>{{ contract.insurer }}</td>
+              <td>{{ contract.startDate | date: 'dd.MM.yyyy' : undefined : 'de-DE' }}</td>
+              <td>{{ contract.endDate ? (contract.endDate | date: 'dd.MM.yyyy' : undefined : 'de-DE') : '–' }}</td>
+              <td>{{ contract.annualPremium | currency: 'EUR' : 'symbol' : '1.2-2' : 'de-DE' }}</td>
+              <td>{{ contract.paymentMode }}</td>
+              <td>{{ contract.status }}</td>
+              <td class="actions-cell">
+                <button
+                  mat-button
+                  type="button"
+                  [attr.data-testid]="'btn-edit-contract-' + contract.policyNumber"
+                  [attr.aria-label]="'Vertrag ' + contract.policyNumber + ' bearbeiten'"
+                  (click)="openContractDialog(contract)"
+                >
+                  Bearbeiten
+                </button>
+                <button
+                  mat-button
+                  type="button"
+                  [attr.data-testid]="'btn-delete-contract-' + contract.policyNumber"
+                  [attr.aria-label]="'Vertrag ' + contract.policyNumber + ' löschen'"
+                  (click)="deleteContract(contract)"
+                >
+                  Löschen
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+    <button mat-raised-button color="primary" type="button" data-testid="btn-add-contract" (click)="openContractDialog()">
+      Vertrag hinzufügen
+    </button>
+  </section>
+}

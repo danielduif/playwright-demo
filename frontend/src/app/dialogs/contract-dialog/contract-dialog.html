@@ -1,0 +1,190 @@
+<div data-testid="dialog-contract">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>{{ isEdit ? 'Vertrag bearbeiten' : 'Vertrag hinzufügen' }}</h2>
+    <button mat-icon-button type="button" aria-label="Schließen" data-testid="btn-close" (click)="cancel()">✕</button>
+  </div>
+  <mat-dialog-content>
+    <form novalidate (ngSubmit)="save()">
+      @if (errorState.bannerVisible()) {
+        <div class="dialog-error-banner" role="alert" data-testid="dialog-error-banner">
+          {{ messages.dialogErrorBanner }}
+        </div>
+      }
+
+      <div class="field-row">
+        <div class="field">
+          <label for="field-line">Sparte *</label>
+          <select
+            id="field-line"
+            data-testid="field-line"
+            name="line"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('line') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('line') ? 'error-line' : null"
+            [(ngModel)]="line"
+            (ngModelChange)="onLineChange()"
+            (blur)="onBlur('line')"
+          >
+            <option value="">Bitte wählen</option>
+            @for (option of data.lookups.contractLines; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+          @if (errorFor('line'); as error) {
+            <div class="field-error" id="error-line" data-testid="error-line">{{ error }}</div>
+          }
+        </div>
+
+        <div class="field">
+          <label for="field-insurer">Versicherer *</label>
+          <select
+            id="field-insurer"
+            data-testid="field-insurer"
+            name="insurer"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('insurer') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('insurer') ? 'error-insurer' : null"
+            [(ngModel)]="insurer"
+            (blur)="onBlur('insurer')"
+          >
+            <option value="">Bitte wählen</option>
+            @for (option of data.lookups.insurers; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+          @if (errorFor('insurer'); as error) {
+            <div class="field-error" id="error-insurer" data-testid="error-insurer">{{ error }}</div>
+          }
+        </div>
+      </div>
+
+      @if (isKfz) {
+        <div class="field">
+          <label for="field-licensePlate">Amtliches Kennzeichen *</label>
+          <input
+            id="field-licensePlate"
+            data-testid="field-licensePlate"
+            name="licensePlate"
+            type="text"
+            placeholder="HH-AB 1234"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('licensePlate') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('licensePlate') ? 'error-licensePlate' : null"
+            [(ngModel)]="licensePlate"
+            (blur)="onBlur('licensePlate')"
+          />
+          @if (errorFor('licensePlate'); as error) {
+            <div class="field-error" id="error-licensePlate" data-testid="error-licensePlate">{{ error }}</div>
+          }
+        </div>
+      }
+
+      <div class="field">
+        <label for="field-policyNumber">Policennummer *</label>
+        <input
+          id="field-policyNumber"
+          data-testid="field-policyNumber"
+          name="policyNumber"
+          type="text"
+          placeholder="XXX-123456"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('policyNumber') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('policyNumber') ? 'error-policyNumber' : null"
+          [(ngModel)]="policyNumber"
+          (blur)="onBlur('policyNumber')"
+        />
+        @if (errorFor('policyNumber'); as error) {
+          <div class="field-error" id="error-policyNumber" data-testid="error-policyNumber">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="field-startDate">Vertragsbeginn *</label>
+          <input
+            id="field-startDate"
+            data-testid="field-startDate"
+            name="startDate"
+            type="text"
+            placeholder="TT.MM.JJJJ"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('startDate') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('startDate') ? 'error-startDate' : null"
+            [(ngModel)]="startDate"
+            (blur)="onBlur('startDate')"
+          />
+          @if (errorFor('startDate'); as error) {
+            <div class="field-error" id="error-startDate" data-testid="error-startDate">{{ error }}</div>
+          }
+        </div>
+
+        <div class="field">
+          <label for="field-endDate">Vertragsende</label>
+          <input
+            id="field-endDate"
+            data-testid="field-endDate"
+            name="endDate"
+            type="text"
+            placeholder="TT.MM.JJJJ"
+            [attr.aria-invalid]="errorFor('endDate') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('endDate') ? 'error-endDate' : null"
+            [(ngModel)]="endDate"
+            (blur)="onBlur('endDate')"
+          />
+          @if (errorFor('endDate'); as error) {
+            <div class="field-error" id="error-endDate" data-testid="error-endDate">{{ error }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="field-annualPremium">Jahresbeitrag (€) *</label>
+          <input
+            id="field-annualPremium"
+            data-testid="field-annualPremium"
+            name="annualPremium"
+            type="text"
+            placeholder="0,00"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('annualPremium') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('annualPremium') ? 'error-annualPremium' : null"
+            [(ngModel)]="annualPremium"
+            (blur)="onBlur('annualPremium')"
+          />
+          @if (errorFor('annualPremium'); as error) {
+            <div class="field-error" id="error-annualPremium" data-testid="error-annualPremium">{{ error }}</div>
+          }
+        </div>
+
+        <div class="field">
+          <label for="field-paymentMode">Zahlweise *</label>
+          <select
+            id="field-paymentMode"
+            data-testid="field-paymentMode"
+            name="paymentMode"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('paymentMode') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('paymentMode') ? 'error-paymentMode' : null"
+            [(ngModel)]="paymentMode"
+            (blur)="onBlur('paymentMode')"
+          >
+            <option value="">Bitte wählen</option>
+            @for (option of data.lookups.paymentModes; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+          @if (errorFor('paymentMode'); as error) {
+            <div class="field-error" id="error-paymentMode" data-testid="error-paymentMode">{{ error }}</div>
+          }
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" data-testid="btn-cancel" (click)="cancel()">Abbrechen</button>
+    <button mat-raised-button color="primary" type="button" data-testid="btn-save" [disabled]="saving()" (click)="save()">
+      Speichern
+    </button>
+  </mat-dialog-actions>
+</div>

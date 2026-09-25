@@ -1,0 +1,128 @@
+<div data-testid="dialog-contact">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>Kontakt &amp; Adresse bearbeiten</h2>
+    <button mat-icon-button type="button" aria-label="Schließen" data-testid="btn-close" (click)="cancel()">✕</button>
+  </div>
+  <mat-dialog-content>
+    <form novalidate (ngSubmit)="save()">
+      @if (errorState.bannerVisible()) {
+        <div class="dialog-error-banner" role="alert" data-testid="dialog-error-banner">
+          {{ messages.dialogErrorBanner }}
+        </div>
+      }
+
+      <div class="field">
+        <label for="field-email">E-Mail-Adresse *</label>
+        <input
+          id="field-email"
+          data-testid="field-email"
+          name="email"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('email') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('email') ? 'error-email' : null"
+          [(ngModel)]="email"
+          (blur)="onBlur('email')"
+        />
+        @if (errorFor('email'); as error) {
+          <div class="field-error" id="error-email" data-testid="error-email">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-phone">Telefonnummer</label>
+        <input
+          id="field-phone"
+          data-testid="field-phone"
+          name="phone"
+          type="text"
+          [attr.aria-invalid]="errorFor('phone') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('phone') ? 'error-phone' : null"
+          [(ngModel)]="phone"
+          (blur)="onBlur('phone')"
+        />
+        @if (errorFor('phone'); as error) {
+          <div class="field-error" id="error-phone" data-testid="error-phone">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-street">Straße *</label>
+        <input
+          id="field-street"
+          data-testid="field-street"
+          name="street"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('street') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('street') ? 'error-street' : null"
+          [(ngModel)]="street"
+          (blur)="onBlur('street')"
+        />
+        @if (errorFor('street'); as error) {
+          <div class="field-error" id="error-street" data-testid="error-street">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-houseNumber">Hausnummer *</label>
+        <input
+          id="field-houseNumber"
+          data-testid="field-houseNumber"
+          name="houseNumber"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('houseNumber') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('houseNumber') ? 'error-houseNumber' : null"
+          [(ngModel)]="houseNumber"
+          (blur)="onBlur('houseNumber')"
+        />
+        @if (errorFor('houseNumber'); as error) {
+          <div class="field-error" id="error-houseNumber" data-testid="error-houseNumber">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-postalCode">PLZ *</label>
+        <input
+          id="field-postalCode"
+          data-testid="field-postalCode"
+          name="postalCode"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('postalCode') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('postalCode') ? 'error-postalCode' : null"
+          [(ngModel)]="postalCode"
+          (blur)="onBlur('postalCode')"
+        />
+        @if (errorFor('postalCode'); as error) {
+          <div class="field-error" id="error-postalCode" data-testid="error-postalCode">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-city">Ort *</label>
+        <input
+          id="field-city"
+          data-testid="field-city"
+          name="city"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('city') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('city') ? 'error-city' : null"
+          [(ngModel)]="city"
+          (blur)="onBlur('city')"
+        />
+        @if (errorFor('city'); as error) {
+          <div class="field-error" id="error-city" data-testid="error-city">{{ error }}</div>
+        }
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" data-testid="btn-cancel" (click)="cancel()">Abbrechen</button>
+    <button mat-raised-button color="primary" type="button" data-testid="btn-save" [disabled]="saving()" (click)="save()">
+      Speichern
+    </button>
+  </mat-dialog-actions>
+</div>

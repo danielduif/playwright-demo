@@ -1,0 +1,232 @@
+<div data-testid="dialog-customer-create">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>Neuen Kunden anlegen</h2>
+    <button mat-icon-button type="button" aria-label="Schließen" data-testid="btn-close" (click)="cancel()">✕</button>
+  </div>
+  <mat-dialog-content>
+    <form novalidate (ngSubmit)="save()">
+      @if (errorState.bannerVisible()) {
+        <div class="dialog-error-banner" role="alert" data-testid="dialog-error-banner">
+          {{ messages.dialogErrorBanner }}
+        </div>
+      }
+
+      <div class="field">
+        <label for="field-salutation">Anrede *</label>
+        <select
+          id="field-salutation"
+          data-testid="field-salutation"
+          name="salutation"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('salutation') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('salutation') ? 'error-salutation' : null"
+          [(ngModel)]="salutation"
+          (blur)="onBlur('salutation')"
+        >
+          <option value="">Bitte wählen</option>
+          <option value="Herr">Herr</option>
+          <option value="Frau">Frau</option>
+          <option value="Divers">Divers</option>
+        </select>
+        @if (errorFor('salutation'); as error) {
+          <div class="field-error" id="error-salutation" data-testid="error-salutation">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="field-firstName">Vorname *</label>
+          <input
+            id="field-firstName"
+            data-testid="field-firstName"
+            name="firstName"
+            type="text"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('firstName') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('firstName') ? 'error-firstName' : null"
+            [(ngModel)]="firstName"
+            (blur)="onBlur('firstName')"
+          />
+          @if (errorFor('firstName'); as error) {
+            <div class="field-error" id="error-firstName" data-testid="error-firstName">{{ error }}</div>
+          }
+        </div>
+
+        <div class="field">
+          <label for="field-lastName">Nachname *</label>
+          <input
+            id="field-lastName"
+            data-testid="field-lastName"
+            name="lastName"
+            type="text"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('lastName') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('lastName') ? 'error-lastName' : null"
+            [(ngModel)]="lastName"
+            (blur)="onBlur('lastName')"
+          />
+          @if (errorFor('lastName'); as error) {
+            <div class="field-error" id="error-lastName" data-testid="error-lastName">{{ error }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="field-birthDate">Geburtsdatum *</label>
+          <input
+            id="field-birthDate"
+            data-testid="field-birthDate"
+            name="birthDate"
+            type="text"
+            placeholder="TT.MM.JJJJ"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('birthDate') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('birthDate') ? 'error-birthDate' : null"
+            [(ngModel)]="birthDate"
+            (blur)="onBlur('birthDate')"
+          />
+          @if (errorFor('birthDate'); as error) {
+            <div class="field-error" id="error-birthDate" data-testid="error-birthDate">{{ error }}</div>
+          }
+        </div>
+
+        <div class="field">
+          <label for="field-status">Status *</label>
+          <select
+            id="field-status"
+            data-testid="field-status"
+            name="status"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('status') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('status') ? 'error-status' : null"
+            [(ngModel)]="status"
+            (blur)="onBlur('status')"
+          >
+            <option value="Interessent">Interessent</option>
+            <option value="Aktiv">Aktiv</option>
+            <option value="Inaktiv">Inaktiv</option>
+          </select>
+          @if (errorFor('status'); as error) {
+            <div class="field-error" id="error-status" data-testid="error-status">{{ error }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="field-email">E-Mail-Adresse *</label>
+        <input
+          id="field-email"
+          data-testid="field-email"
+          name="email"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('email') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('email') ? 'error-email' : null"
+          [(ngModel)]="email"
+          (blur)="onBlur('email')"
+        />
+        @if (errorFor('email'); as error) {
+          <div class="field-error" id="error-email" data-testid="error-email">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-phone">Telefonnummer</label>
+        <input
+          id="field-phone"
+          data-testid="field-phone"
+          name="phone"
+          type="text"
+          [attr.aria-invalid]="errorFor('phone') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('phone') ? 'error-phone' : null"
+          [(ngModel)]="phone"
+          (blur)="onBlur('phone')"
+        />
+        @if (errorFor('phone'); as error) {
+          <div class="field-error" id="error-phone" data-testid="error-phone">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-street">Straße *</label>
+        <input
+          id="field-street"
+          data-testid="field-street"
+          name="street"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('street') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('street') ? 'error-street' : null"
+          [(ngModel)]="street"
+          (blur)="onBlur('street')"
+        />
+        @if (errorFor('street'); as error) {
+          <div class="field-error" id="error-street" data-testid="error-street">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="field-houseNumber">Hausnummer *</label>
+          <input
+            id="field-houseNumber"
+            data-testid="field-houseNumber"
+            name="houseNumber"
+            type="text"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('houseNumber') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('houseNumber') ? 'error-houseNumber' : null"
+            [(ngModel)]="houseNumber"
+            (blur)="onBlur('houseNumber')"
+          />
+          @if (errorFor('houseNumber'); as error) {
+            <div class="field-error" id="error-houseNumber" data-testid="error-houseNumber">{{ error }}</div>
+          }
+        </div>
+
+        <div class="field">
+          <label for="field-postalCode">PLZ *</label>
+          <input
+            id="field-postalCode"
+            data-testid="field-postalCode"
+            name="postalCode"
+            type="text"
+            aria-required="true"
+            [attr.aria-invalid]="errorFor('postalCode') ? 'true' : null"
+            [attr.aria-describedby]="errorFor('postalCode') ? 'error-postalCode' : null"
+            [(ngModel)]="postalCode"
+            (blur)="onBlur('postalCode')"
+          />
+          @if (errorFor('postalCode'); as error) {
+            <div class="field-error" id="error-postalCode" data-testid="error-postalCode">{{ error }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="field-city">Ort *</label>
+        <input
+          id="field-city"
+          data-testid="field-city"
+          name="city"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('city') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('city') ? 'error-city' : null"
+          [(ngModel)]="city"
+          (blur)="onBlur('city')"
+        />
+        @if (errorFor('city'); as error) {
+          <div class="field-error" id="error-city" data-testid="error-city">{{ error }}</div>
+        }
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" data-testid="btn-cancel" (click)="cancel()">Abbrechen</button>
+    <button mat-raised-button color="primary" type="button" data-testid="btn-save" [disabled]="saving()" (click)="save()">
+      Speichern
+    </button>
+  </mat-dialog-actions>
+</div>

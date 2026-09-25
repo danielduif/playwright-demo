@@ -1,0 +1,119 @@
+<div data-testid="dialog-master-data">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>Stammdaten bearbeiten</h2>
+    <button mat-icon-button type="button" aria-label="Schließen" data-testid="btn-close" (click)="cancel()">✕</button>
+  </div>
+  <mat-dialog-content>
+    <form novalidate (ngSubmit)="save()">
+      @if (errorState.bannerVisible()) {
+        <div class="dialog-error-banner" role="alert" data-testid="dialog-error-banner">
+          {{ messages.dialogErrorBanner }}
+        </div>
+      }
+
+      <div class="field">
+        <label for="field-salutation">Anrede *</label>
+        <select
+          id="field-salutation"
+          data-testid="field-salutation"
+          name="salutation"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('salutation') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('salutation') ? 'error-salutation' : null"
+          [(ngModel)]="salutation"
+          (blur)="onBlur('salutation')"
+        >
+          <option value="">Bitte wählen</option>
+          <option value="Herr">Herr</option>
+          <option value="Frau">Frau</option>
+          <option value="Divers">Divers</option>
+        </select>
+        @if (errorFor('salutation'); as error) {
+          <div class="field-error" id="error-salutation" data-testid="error-salutation">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-firstName">Vorname *</label>
+        <input
+          id="field-firstName"
+          data-testid="field-firstName"
+          name="firstName"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('firstName') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('firstName') ? 'error-firstName' : null"
+          [(ngModel)]="firstName"
+          (blur)="onBlur('firstName')"
+        />
+        @if (errorFor('firstName'); as error) {
+          <div class="field-error" id="error-firstName" data-testid="error-firstName">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-lastName">Nachname *</label>
+        <input
+          id="field-lastName"
+          data-testid="field-lastName"
+          name="lastName"
+          type="text"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('lastName') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('lastName') ? 'error-lastName' : null"
+          [(ngModel)]="lastName"
+          (blur)="onBlur('lastName')"
+        />
+        @if (errorFor('lastName'); as error) {
+          <div class="field-error" id="error-lastName" data-testid="error-lastName">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-birthDate">Geburtsdatum *</label>
+        <input
+          id="field-birthDate"
+          data-testid="field-birthDate"
+          name="birthDate"
+          type="text"
+          placeholder="TT.MM.JJJJ"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('birthDate') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('birthDate') ? 'error-birthDate' : null"
+          [(ngModel)]="birthDate"
+          (blur)="onBlur('birthDate')"
+        />
+        @if (errorFor('birthDate'); as error) {
+          <div class="field-error" id="error-birthDate" data-testid="error-birthDate">{{ error }}</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="field-status">Status *</label>
+        <select
+          id="field-status"
+          data-testid="field-status"
+          name="status"
+          aria-required="true"
+          [attr.aria-invalid]="errorFor('status') ? 'true' : null"
+          [attr.aria-describedby]="errorFor('status') ? 'error-status' : null"
+          [(ngModel)]="status"
+          (blur)="onBlur('status')"
+        >
+          <option value="Interessent">Interessent</option>
+          <option value="Aktiv">Aktiv</option>
+          <option value="Inaktiv">Inaktiv</option>
+        </select>
+        @if (errorFor('status'); as error) {
+          <div class="field-error" id="error-status" data-testid="error-status">{{ error }}</div>
+        }
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" data-testid="btn-cancel" (click)="cancel()">Abbrechen</button>
+    <button mat-raised-button color="primary" type="button" data-testid="btn-save" [disabled]="saving()" (click)="save()">
+      Speichern
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,52 @@
+.customer-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0 0 0.25rem;
+  }
+
+  .customer-number {
+    margin: 0;
+    color: var(--mat-sys-on-surface-variant, #555);
+  }
+}
+
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 0.75rem;
+    margin: 0;
+  }
+
+  dt {
+    font-weight: 500;
+    color: var(--mat-sys-on-surface-variant, #555);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.contracts-section {
+  margin-bottom: 2rem;
+
+  table {
+    margin-bottom: 1rem;
+  }
+}
+
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
